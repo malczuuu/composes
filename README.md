@@ -1,4 +1,4 @@
-# Keycloak
+# Keycloak Compose
 
 This repository sets up Keycloak `21.0.1` with MariaDB `10.7.8`.
 
