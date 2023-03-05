@@ -1,0 +1,68 @@
+version: "3"
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    ports:
+      - 127.0.0.1:8080:8080
+    command:
+      - start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KC_DB: mariadb
+      KC_DB_URL: jdbc:mariadb://mariadb:3306/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: yBsDABFDIas5jerb
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+    volumes:
+      - keycloak_data:/data/
+    depends_on:
+      - mariadb
+      - mailhog
+    networks:
+      - keycloak
+
+  mariadb:
+    image: mariadb:10.7.8
+    environment:
+      MARIADB_ROOT_PASSWORD: ingFXT9c8a4ESe01
+    volumes:
+      - keycloak_mariadb_data:/var/lib/mysql/
+      - ./conf/mariadb/01-privileges.init.sql:/docker-entrypoint-initdb.d/01-privileges.init.sql:ro
+      - ./conf/mariadb/02-keycloak.init.sql:/docker-entrypoint-initdb.d/02-keycloak.init.sql:ro
+    networks:
+      - keycloak
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - 127.0.0.1:8025:8025
+    networks:
+      - keycloak
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.1
+    ports:
+      - 127.0.0.1:3307:80
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ingFXT9c8a4ESe01
+    depends_on:
+      - mariadb
+    networks:
+      - keycloak
+
+volumes:
+  keycloak_data:
+    external: true
+  keycloak_mariadb_data:
+    external: true
+
+networks:
+  keycloak:
+    external: true
+
