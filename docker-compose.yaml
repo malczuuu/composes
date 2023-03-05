@@ -8,8 +8,6 @@ services:
     command:
       - start-dev
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: password
       KC_DB: mariadb
       KC_DB_URL: jdbc:mariadb://mariadb:3306/keycloak
       KC_DB_USERNAME: keycloak
