@@ -1,7 +1,8 @@
 # Keycloak Compose
 
 This repository sets up [Keycloak `26.2.5`][keycloak-docker] with [MariaDB `11.8.2`][mariadb-docker] to use in
-development environments. Keycloak is configured with two realms - `master` (default administration realm) and `primary` (to use with target application).
+development environments. Keycloak is configured with two realms - `master` (default administration realm) and
+`primary` (to use with target application).
 
 Additionally, it sets up development tools:
 
@@ -17,13 +18,16 @@ docker volume create keycloak_data
 docker volume create keycloak_mariadb_data
 docker volume create keycloak_mailpit_data
 
-docker-compose up -d
+docker compose up -d
 ```
+
+**Note** that it's required to use Docker Compose v2, where `compose` is a subcommand of `docker` instead of being separate
+`docker-compose` executable and `version` is no longer required in `docker-compose.yaml` files.
 
 To restore database to the default setup, recreate volumes.
 
 ```sh
-docker-compose down
+docker compose down
 
 docker volume rm keycloak_data
 docker volume rm keycloak_mariadb_data
@@ -32,7 +36,7 @@ docker volume create keycloak_data
 docker volume create keycloak_mariadb_data
 docker volume create keycloak_mailpit_data
 
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Usage Details
