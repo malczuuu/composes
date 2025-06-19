@@ -45,11 +45,11 @@ There are some predefined users in default database state of given Keycloak inst
 - http://localhost:8025/ - Mailpit, mock tool for email server,
 - http://localhost:3307/ - PhpMyAdmin.
 
-| Realm      | Username          | Email                                | Password          |
-|------------|-------------------|--------------------------------------|-------------------|
-| *`master`* | `admin`           | `admin@example.com`                  | `password`        |
-| `primary`  | `obiwan.kenobi`   | `obiwan.kenobi@empire.example.com`   | `obiwan.kenobi`   |
-| `primary`  | `sheev.palpatine` | `sheev.palpatine@empire.example.com` | `sheev.palpatine` |
+| Realm        | Username          | Email                                | Password          |
+|--------------|-------------------|--------------------------------------|-------------------|
+| **`master`** | `admin`           | `admin@example.com`                  | `password`        |
+| `primary`    | `obiwan.kenobi`   | `obiwan.kenobi@empire.example.com`   | `obiwan.kenobi`   |
+| `primary`    | `sheev.palpatine` | `sheev.palpatine@empire.example.com` | `sheev.palpatine` |
 
 [keycloak-docker]: https://quay.io/repository/keycloak/keycloak
 
