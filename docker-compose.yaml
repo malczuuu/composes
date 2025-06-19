@@ -1,8 +1,6 @@
-version: "3"
 services:
-
   keycloak:
-    image: quay.io/keycloak/keycloak:21.0.1
+    image: quay.io/keycloak/keycloak:26.2.5
     ports:
       - 127.0.0.1:8080:8080
     command:
@@ -18,12 +16,12 @@ services:
       - keycloak_data:/data/
     depends_on:
       - mariadb
-      - mailhog
+      - mailpit
     networks:
       - keycloak
 
   mariadb:
-    image: mariadb:10.7.8
+    image: mariadb:11.8.2
     environment:
       MARIADB_ROOT_PASSWORD: ingFXT9c8a4ESe01
     volumes:
@@ -33,15 +31,17 @@ services:
     networks:
       - keycloak
 
-  mailhog:
-    image: mailhog/mailhog:v1.0.1
+  mailpit:
+    image: axllent/mailpit:v1.26
     ports:
       - 127.0.0.1:8025:8025
+    volumes:
+      - keycloak_mailpit_data:/data
     networks:
       - keycloak
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.2.1
+    image: phpmyadmin:5.2.2
     ports:
       - 127.0.0.1:3307:80
     environment:
@@ -58,6 +58,8 @@ volumes:
   keycloak_data:
     external: true
   keycloak_mariadb_data:
+    external: true
+  keycloak_mailpit_data:
     external: true
 
 networks:
