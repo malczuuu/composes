@@ -1,0 +1,21 @@
+[http]
+    [http.routers]
+        [http.routers.backend]
+            middlewares = ["replace-prefix-api"]
+            rule = "PathPrefix(`/prefix/api`)"
+            service = "backend"
+            priority = 0
+        [http.routers.frontend]
+            rule = "PathPrefix(`/`)"
+            service = "frontend"
+            priority = 0
+
+    [http.middlewares]
+        [http.middlewares.replace-prefix-api.stripPrefix]
+            prefixes = ["/prefix"]
+
+    [http.services]
+        [[http.services.backend.loadBalancer.servers]]
+            url = "http://backend-mock:80/"
+        [[http.services.frontend.loadBalancer.servers]]
+            url = "http://frontend-mock:80/"

@@ -1,0 +1,29 @@
+[log]
+    level = "INFO"
+
+[ping]
+    entryPoint = "metrics"
+
+[metrics]
+    [metrics.prometheus]
+        entryPoint = "metrics"
+
+[entryPoints]
+    # port for webapi
+    [entryPoints.web]
+        address = ":4000"
+            [entryPoints.web.forwardedHeaders]
+                insecure = true
+            [entryPoints.web.transport]
+                [entryPoints.web.transport.lifeCycle]
+                    requestAcceptGraceTimeout = "10s"
+
+    [entryPoints.metrics]
+        address = ":6982"
+
+[providers]
+    [providers.file]
+        filename = "/etc/traefik/traefik_dynamic.toml"
+
+# enable accessLog with default settings (therefore it is empty)
+[accessLog]
