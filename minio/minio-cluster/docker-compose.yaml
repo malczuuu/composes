@@ -1,0 +1,55 @@
+services:
+  gateway:
+    image: nginx:${NGINX_VERSION}
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 127.0.0.1:9000:9000
+      - 127.0.0.1:9001:9001
+    depends_on:
+      - minio-the-first
+      - minio-the-second
+      - minio-the-third
+      - minio-the-fourth
+
+  minio-the-first:
+    image: minio/minio:${MINIO_VERSION}
+    volumes:
+      - minio-the-first_data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server http://minio-the-first:9000/data http://minio-the-second:9000/data http://minio-the-third:9000/data http://minio-the-fourth:9000/data --console-address ":9001"
+
+  minio-the-second:
+    image: minio/minio:${MINIO_VERSION}
+    volumes:
+      - minio-the-second_data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server http://minio-the-first:9000/data http://minio-the-second:9000/data http://minio-the-third:9000/data http://minio-the-fourth:9000/data --console-address ":9001"
+
+  minio-the-third:
+    image: minio/minio:${MINIO_VERSION}
+    volumes:
+      - minio-the-third_data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server http://minio-the-first:9000/data http://minio-the-second:9000/data http://minio-the-third:9000/data http://minio-the-fourth:9000/data --console-address ":9001"
+
+  minio-the-fourth:
+    image: minio/minio:${MINIO_VERSION}
+    volumes:
+      - minio-the-fourth_data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server http://minio-the-first:9000/data http://minio-the-second:9000/data http://minio-the-third:9000/data http://minio-the-fourth:9000/data --console-address ":9001"
+
+volumes:
+  minio-the-first_data:
+  minio-the-second_data:
+  minio-the-third_data:
+  minio-the-fourth_data:
