@@ -2,7 +2,7 @@ services:
   portainer:
     image: portainer/portainer:1.25.0
     ports:
-      - 127.0.0.1:9000:9000
+      - "127.0.0.1:9000:9000"
     restart: always
     command: --no-auth
     volumes:
