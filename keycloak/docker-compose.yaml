@@ -1,6 +1,6 @@
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2.5
+    image: quay.io/keycloak/keycloak:26.3.3
     ports:
       - 127.0.0.1:8080:8080
     command:
@@ -15,30 +15,54 @@ services:
     volumes:
       - keycloak_data:/data/
     depends_on:
-      - mariadb
-      - mailpit
+      mariadb:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
     networks:
       - keycloak
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin --password password && echo OK"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   mariadb:
-    image: mariadb:11.8.2
+    image: mariadb:12.0.2
     environment:
       MARIADB_ROOT_PASSWORD: ingFXT9c8a4ESe01
+    command:
+      - --character-set-server=utf8
+      - --collation-server=utf8_bin
+      - --max-allowed-packet=67108864
     volumes:
       - keycloak_mariadb_data:/var/lib/mysql/
       - ./conf/mariadb/01-privileges.init.sql:/docker-entrypoint-initdb.d/01-privileges.init.sql:ro
       - ./conf/mariadb/02-keycloak.init.sql:/docker-entrypoint-initdb.d/02-keycloak.init.sql:ro
     networks:
       - keycloak
+    healthcheck:
+      test: [ "CMD", "mariadb", "-u", "root", "-pingFXT9c8a4ESe01", "-e", "SHOW DATABASES;" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   mailpit:
-    image: axllent/mailpit:v1.26
+    image: axllent/mailpit:v1.27.8
     ports:
       - 127.0.0.1:8025:8025
     volumes:
       - keycloak_mailpit_data:/data
     networks:
       - keycloak
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "--quiet", "http://localhost:8025" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   phpmyadmin:
     image: phpmyadmin:5.2.2
@@ -50,19 +74,21 @@ services:
       PMA_USER: root
       PMA_PASSWORD: ingFXT9c8a4ESe01
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - keycloak
-
-volumes:
-  keycloak_data:
-    external: true
-  keycloak_mariadb_data:
-    external: true
-  keycloak_mailpit_data:
-    external: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   keycloak:
-    external: true
 
+volumes:
+  keycloak_data:
+  keycloak_mariadb_data:
+  keycloak_mailpit_data:
