@@ -8,6 +8,8 @@ reverse-proxy. It demonstrates single gateway which routes HTTP paths into two a
 /prefix/api  ->  /api  backend-mock
 ```
 
+Browse [`http://localhost:4000`](http://localhost:4000) to see the demo.
+
 End applications use [`ealen/echo-server:0.9.2`](https://hub.docker.com/r/ealen/echo-server) image.
 
 See `$.environment.APP_NAME` to find out to which application was the endpoint routed.
