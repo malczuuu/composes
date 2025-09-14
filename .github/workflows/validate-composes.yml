@@ -1,0 +1,45 @@
+name: Validate Docker Compose
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  discover-files:
+    runs-on: ubuntu-latest
+    outputs:
+      compose-files: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Find all docker-compose files
+        id: set-matrix
+        run: |
+          files=$(find . -type f \( -name 'docker-compose.yml' -o -name 'docker-compose.yaml' \))
+          if [ -z "$files" ]; then
+            echo "No docker-compose files found."
+            exit 1
+          fi
+          # Format as JSON array for matrix
+          json=$(echo "$files" | jq -R -s -c 'split("\n")[:-1]')
+          echo "Matrix JSON: $json"
+          echo "matrix=$json" >> $GITHUB_OUTPUT
+
+  validate:
+    needs: discover-files
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        file: ${{fromJSON(needs.discover-files.outputs.compose-files)}}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        uses: docker/setup-docker@v3
+
+      - name: Validate ${{ matrix.file }}
+        run: |
+          echo "Validating ${{ matrix.file }}..."
+          docker-compose -f "${{ matrix.file }}" config
