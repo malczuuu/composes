@@ -36,9 +36,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
-        uses: docker/setup-docker@v3
-
       - name: Validate ${{ matrix.file }}
         run: |
           echo "Validating ${{ matrix.file }}..."
