@@ -9,9 +9,6 @@ Additionally, it sets up development tools:
 - [`mailpit:v1.26`][mailpit-docker] - mock for email server (realms are configured to use it as email server),
 - [`phpmyadmin:5.2.2`][phpmyadmin-docker].
 
-**Note** that it's required to use Docker Compose v2, where `compose` is a subcommand of `docker` instead of being separate
-`docker-compose` executable and `version` is no longer required in `docker-compose.yaml` files.
-
 To restore database to the default setup, recreate volumes.
 
 ```sh
