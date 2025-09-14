@@ -10,7 +10,7 @@ jobs:
     outputs:
       compose-files: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Find all docker-compose files
@@ -23,7 +23,7 @@ jobs:
           fi
           # Format as JSON array for matrix
           json=$(echo "$files" | jq -R -s -c 'split("\n")[:-1]')
-          echo "Matrix JSON: $json"
+          echo "matrix=$json"
           echo "matrix=$json" >> $GITHUB_OUTPUT
 
   validate:
@@ -33,7 +33,7 @@ jobs:
       matrix:
         file: ${{fromJSON(needs.discover-files.outputs.compose-files)}}
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Validate ${{ matrix.file }}
