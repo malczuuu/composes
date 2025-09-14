@@ -2,7 +2,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.3
     ports:
-      - 127.0.0.1:8080:8080
+      - "127.0.0.1:8080:8080"
     command:
       - start-dev
     environment:
@@ -52,7 +52,7 @@ services:
   mailpit:
     image: axllent/mailpit:v1.27.8
     ports:
-      - 127.0.0.1:8025:8025
+      - "127.0.0.1:8025:8025"
     volumes:
       - keycloak_mailpit_data:/data
     networks:
@@ -67,7 +67,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:5.2.2
     ports:
-      - 127.0.0.1:3307:80
+      - "127.0.0.1:3307:80"
     environment:
       PMA_HOST: mariadb
       PMA_PORT: 3306
