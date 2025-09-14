@@ -25,10 +25,7 @@ services:
 
 volumes:
   mongo_data:
-    external: true
   mongo_config:
-    external: true
 
 networks:
   mongo:
-    external: true
