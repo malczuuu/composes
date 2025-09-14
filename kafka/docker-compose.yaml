@@ -15,6 +15,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
     volumes:
       - kafka_data:/var/lib/kafka/data:rw
+    networks:
+      - kafka
     healthcheck:
       test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list"]
       interval: 10s
@@ -25,6 +27,8 @@ services:
   kafka-init-job:
     image: *kafka-image
     entrypoint: /bin/bash
+    networks:
+      - kafka
     depends_on:
       kafka:
         condition: service_healthy
@@ -32,6 +36,9 @@ services:
       -c "
         /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic test-topic --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092
       "
+
+networks:
+  kafka:
 
 volumes:
   kafka_data:
