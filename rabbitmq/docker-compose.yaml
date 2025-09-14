@@ -1,7 +1,6 @@
-version: "3"
 services:
   rabbitmq:
-    image: rabbitmq:4.1.1-management-alpine
+    image: rabbitmq:4.1.4-management-alpine
     ports:
       - "127.0.0.1:1883:1883"
       - "127.0.0.1:5672:5672"
@@ -17,8 +16,6 @@ services:
 
 networks:
   rabbitmq:
-    external: true
 
 volumes:
   rabbitmq_data:
-    external: true
