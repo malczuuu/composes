@@ -39,4 +39,4 @@ jobs:
       - name: Validate ${{ matrix.file }}
         run: |
           echo "Validating ${{ matrix.file }}..."
-          docker-compose -f "${{ matrix.file }}" config
+          docker compose -f "${{ matrix.file }}" config
