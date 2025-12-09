@@ -65,7 +65,7 @@ services:
       start_period: 10s
 
   phpmyadmin:
-    image: phpmyadmin:5.2.2
+    image: phpmyadmin:5.2.3
     ports:
       - "127.0.0.1:3307:80"
     environment:
