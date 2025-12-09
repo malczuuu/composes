@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    target-branch: main
+    open-pull-requests-limit: 20
+    labels:
+      - "dependencies"
