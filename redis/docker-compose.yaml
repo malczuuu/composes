@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:8.0-alpine
+    image: redis:8.4-alpine
     ports:
       - "127.0.0.1:6376:6379"
     networks:
