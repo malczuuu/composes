@@ -37,6 +37,15 @@ updates:
       - "dependencies"
 
   - package-ecosystem: "docker-compose"
+    directory: "/nats"
+    schedule:
+      interval: "monthly"
+    target-branch: main
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "docker-compose"
     directory: "/postgres"
     schedule:
       interval: "monthly"

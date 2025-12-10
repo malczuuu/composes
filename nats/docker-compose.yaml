@@ -1,0 +1,25 @@
+services:
+  nats:
+    image: nats:2.10-alpine
+    container_name: nats
+    ports:
+      - "127.0.0.1:4222:4222"
+      - "127.0.0.1:8222:8222"
+      - "127.0.0.1:6222:6222"
+    volumes:
+      - nats_data:/data
+    command: [ "-js", "-sd", "/data", "-m", "8222" ]
+    networks:
+      - nats
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8222/healthz || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 2s
+
+networks:
+  nats:
+
+volumes:
+  nats_data:
