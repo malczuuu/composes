@@ -55,6 +55,15 @@ updates:
       - "dependencies"
 
   - package-ecosystem: "docker-compose"
+    directory: "/redis"
+    schedule:
+      interval: "monthly"
+    target-branch: main
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "docker-compose"
     directory: "/traefik"
     schedule:
       interval: "monthly"
