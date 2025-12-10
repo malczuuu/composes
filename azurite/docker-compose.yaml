@@ -1,0 +1,24 @@
+services:
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:10000:10000" # blob service
+    volumes:
+      - azurite_data:/data
+    networks:
+      - azurite
+    command: "azurite-blob --blobHost 0.0.0.0 --blobPort 10000"
+    healthcheck:
+      test: ["CMD", "nc", "0.0.0.0", "10000", "-z"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  azurite:
+
+volumes:
+  azurite_data:
