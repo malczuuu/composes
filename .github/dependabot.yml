@@ -73,6 +73,15 @@ updates:
       - "dependencies"
 
   - package-ecosystem: "docker-compose"
+    directory: "/rustfs"
+    schedule:
+      interval: "monthly"
+    target-branch: main
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "docker-compose"
     directory: "/traefik"
     schedule:
       interval: "monthly"
