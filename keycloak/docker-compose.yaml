@@ -50,7 +50,7 @@ services:
       start_period: 10s
 
   mailpit:
-    image: axllent/mailpit:v1.29.5
+    image: axllent/mailpit:v1.29.7
     ports:
       - "127.0.0.1:8025:8025"
     volumes:
